@@ -5,12 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AdventurerGame;
 
-public class TextureManager
+public static class TextureManager
 {
-    public Texture2D playerSprit;
+    public static Texture2D playerSpritIdle;
+    public static Texture2D playerSpritWalk;
 
-    public void LoadTexture(Microsoft.Xna.Framework.Content.ContentManager content)
+    public static void LoadTexture(Microsoft.Xna.Framework.Content.ContentManager content)
     {
-        playerSprit = content.Load<Texture2D>("Player/Sprite/Soldier-Idle");
+        playerSpritIdle = content.Load<Texture2D>("Player/Sprite/idle");
+        playerSpritWalk = content.Load<Texture2D>("Player/Sprite/walk");
     }
 }

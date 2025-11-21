@@ -9,13 +9,12 @@ namespace AdventurerGame;
 public class GameManager : Game
 {
     private GraphicsDeviceManager _graphics;
-    private TextureManager _textureManager;
     private CameraManager _camera;
+    // private SpriteSheetAnimationManager _animationManager;
 
     public GameManager()
     {
         _graphics = new GraphicsDeviceManager(this);
-        _textureManager = new TextureManager();
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
 
@@ -25,19 +24,21 @@ public class GameManager : Game
     {
 
         base.Initialize();
-        Globals.Player = new(100, (float)1.3, 0, 10, 0, 0, 1200, 200, _textureManager.playerSprit);
+        Globals.Player = new(100, (float)1.3, 0, 10, 0, 0, 384, 384, TextureManager.playerSpritWalk);
         _camera = new();
+        // _animationManager = new SpriteSheetAnimationManager(_textureManager.playerSpritIdle, 1, 8, 0.3f, 8, true);
 
     }
 
     protected override void LoadContent()
     {
         Globals.spriteBatch = new SpriteBatch(GraphicsDevice);
-        _textureManager.LoadTexture(Content);
         Globals.WindowHeight = _graphics.GraphicsDevice.DisplayMode.Height;
         Globals.WindowWidth = _graphics.GraphicsDevice.DisplayMode.Width;
         Globals.CurrentWindowWidth = _graphics.PreferredBackBufferWidth;
         Globals.CurrentWindowHeight = _graphics.PreferredBackBufferHeight;
+        TextureManager.LoadTexture(Content);
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -60,8 +61,9 @@ public class GameManager : Game
             }
         }
 
-        Globals.Player.Movement();
+        Globals.Player.UpdatePlayer(gameTime);
         _camera.Follow(Globals.Player);
+        // _animationManager.UpdateAnimations(gameTime);
 
         base.Update(gameTime);
     }
@@ -71,8 +73,7 @@ public class GameManager : Game
         Globals.spriteBatch.Begin(transformMatrix: _camera.Transform, samplerState: SamplerState.PointWrap);
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        Globals.spriteBatch.Draw(Globals.Player.GetTexture, new Rectangle((int)Globals.Player.GetPosX, (int)Globals.Player.GetPosY, Globals.Player.GetSizeX, Globals.Player.GetSizeY), Color.White);
-
+        Globals.Player.DrawPlayer();
 
         Globals.spriteBatch.End();
         base.Draw(gameTime);
