@@ -6,6 +6,6 @@ public class ModelAnimationState
 {
     public enum AnimationState
     {
-        Top, Right, Left, Down, Idle
+        Top, TopRight, TopLeft, Right, Left, Down, Idle
     }
 }

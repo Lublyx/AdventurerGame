@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using AdventurerGame.Manager;
+﻿using AdventurerGame.Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,7 +9,6 @@ public class GameManager : Game
 {
     private GraphicsDeviceManager _graphics;
     private CameraManager _camera;
-    // private SpriteSheetAnimationManager _animationManager;
 
     public GameManager()
     {
@@ -26,7 +24,6 @@ public class GameManager : Game
         base.Initialize();
         Globals.Player = new(100, (float)1.3, 0, 10, 0, 0, 384, 384, TextureManager.playerSpritWalk);
         _camera = new();
-        // _animationManager = new SpriteSheetAnimationManager(_textureManager.playerSpritIdle, 1, 8, 0.3f, 8, true);
 
     }
 
@@ -60,10 +57,14 @@ public class GameManager : Game
                 Globals.CurrentWindowHeight = _graphics.PreferredBackBufferHeight;
             }
         }
+        Globals.Player.ToggleOpenInventory();
+
+        
+
+
 
         Globals.Player.UpdatePlayer(gameTime);
         _camera.Follow(Globals.Player);
-        // _animationManager.UpdateAnimations(gameTime);
 
         base.Update(gameTime);
     }
@@ -72,8 +73,9 @@ public class GameManager : Game
     {
         Globals.spriteBatch.Begin(transformMatrix: _camera.Transform, samplerState: SamplerState.PointWrap);
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
+        Globals.spriteBatch.Draw(TextureManager.map, new Vector2(0, 0), Color.White);
         Globals.Player.DrawPlayer();
+        Globals.Player.DrawnPlayerUtilities();
 
         Globals.spriteBatch.End();
         base.Draw(gameTime);
